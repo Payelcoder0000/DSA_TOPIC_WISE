@@ -1,0 +1,77 @@
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+ 
+
+Example 1:
+
+Input: nums = [3,2,3]
+Output: 3
+
+Example 2:
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+Solution:
+
+Moore's Voting Algorith: O(n) 1 ms 100% faster:
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        int count=0;
+        int ele=0;
+        int i=0;
+		//Travelling over the array keep a "count"
+		//and an "element" if the "count==0" then update the element and match if the next "i" 
+		//is "== element" if yes then "count++" else "count--" 
+		//and the nums[i] which is highest appearing will be in the element.
+		//return element.
+        while(i<nums.length)
+        {
+            if(count==0)
+            {
+                ele=nums[i];
+            }
+            if(ele==nums[i])
+            {
+                count++;
+            }
+            else
+            {
+                count--;
+            }
+            i++;
+        }
+        return ele;
+    }
+}
+
+-----------------------------------------------------------------
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        
+        if(nums.length ==0) return 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(int i=0; i<nums.length; i++){
+            if(map.containsKey(nums[i])){
+                int count = map.get(nums[i]);
+                map.put(nums[i], count+1);
+            }
+            else
+                map.put(nums[i], 1);
+        }
+        
+        for(Map.Entry<Integer,Integer> mp: map.entrySet())
+        {
+            if(mp.getValue() > (nums.length/2))
+                return mp.getKey();
+        }
+        
+        return 0;
+        
+    }
+}

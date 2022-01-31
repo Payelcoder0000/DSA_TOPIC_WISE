@@ -1,0 +1,97 @@
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
+
+ 
+
+Example 1:
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[20,9],[15,7]]
+
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+
+Example 3:
+
+Input: root = []
+Output: []
+
+Soution:
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode rootNode) {
+        
+        List<List<Integer>> list = new ArrayList<>();
+         // if null then return
+	    if (rootNode == null) {
+	    return list;
+	    }
+	 
+	    // declare two stacks
+	    Stack<TreeNode> currentLevel = new Stack<>();
+	    Stack<TreeNode> nextLevel = new Stack<>();
+        List<Integer> list1 = new ArrayList<>();;
+	 
+	    // push the root
+	    currentLevel.push(rootNode);
+	    boolean leftToRight = true;
+	 
+	    // check if stack is empty
+	    while (!currentLevel.isEmpty()) {
+            
+	    // pop out of stack
+	    TreeNode node = currentLevel.pop();
+	     
+	    // print the data in it
+        list1.add(node.val);
+	    System.out.print(node.val + " ");
+	 
+	    // store data according to current
+	    // order.
+	    if (leftToRight) {
+	        if (node.left != null) {
+	        nextLevel.push(node.left);
+	        }
+	         
+	        if (node.right != null) {
+	        nextLevel.push(node.right);
+	        }
+	    }
+	    else {
+	        if (node.right != null) {
+	        nextLevel.push(node.right);
+	        }
+	         
+	        if (node.left != null) {
+	        nextLevel.push(node.left);
+	        }
+	    }
+	 
+	    if (currentLevel.isEmpty()) {
+            list.add(list1);
+            list1 = new ArrayList<>();
+	        leftToRight = !leftToRight;
+	        Stack<TreeNode> temp = currentLevel;
+	        currentLevel = nextLevel;
+	        nextLevel = temp;
+	    }
+	    }
+       return list; 
+    }
+}

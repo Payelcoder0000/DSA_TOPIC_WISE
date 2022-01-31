@@ -1,0 +1,23 @@
+Problem: Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+
+/**
+ * Using HashSet
+ *
+ * Time Complexity: O(N)
+ *
+ * Space Complexity: O(N)
+ */
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+    
+        Set<Integer> list = new HashSet<Integer>();
+        for(int i=0;i<nums.length;i++){
+            if(list.contains(nums[i]))
+                return true;
+            list.add(nums[i]);
+        }
+        return false;
+    }
+}
+

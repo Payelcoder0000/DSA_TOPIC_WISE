@@ -1,0 +1,89 @@
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
+
+ 
+
+Example 1:
+
+
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+Example 2:
+
+
+Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
+
+
+Solution:
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        
+        HashSet<ListNode> set = new HashSet<>();
+        
+        if(head == null) return false;
+        
+        ListNode curr_node = head;
+    
+        
+        while(curr_node != null){
+            if(set.contains(curr_node)) return true;
+            
+            set.add(curr_node);
+            
+            curr_node = curr_node.next;
+        }
+        return false;
+    }
+}
+
+Time Complexity: o(n)
+Space complexity: o(n)
+
+------------------------------------
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        
+        
+        if(head == null) return false;
+        
+        ListNode slow_p = head, fast_p = head;
+       
+        while(slow_p != null && fast_p != null && fast_p.next != null){
+           
+            slow_p = slow_p.next;
+            fast_p = fast_p.next.next;
+            
+            if(slow_p == fast_p) return true;
+            
+        }
+        return false;
+    }
+}
+
+Time Complexity: o(n)
+Space complexity: o(1)

@@ -1,0 +1,58 @@
+Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
+
+The distance between two adjacent cells is 1.
+
+ 
+
+Example 1:
+Input: mat = [[0,0,0],[0,1,0],[0,0,0]]
+Output: [[0,0,0],[0,1,0],[0,0,0]]
+
+Example 2:
+Input: mat = [[0,0,0],[0,1,0],[1,1,1]]
+Output: [[0,0,0],[0,1,0],[1,2,1]]
+
+
+Solution:
+
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        
+      int m = mat.length;
+	int n = mat[0].length;
+	final int inf = Integer.MAX_VALUE - 10000;      // represents infinity
+	// we subtracted 10^4, because maximum order of "mat" is 10^4
+
+	int minDist[][] = new int[m][n];                // stores result
+	// traverse whole array from top-left to bottom-right
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			if (mat[i][j] != 0) {
+				// find minimum from top and left adjacent cell
+				minDist[i][j] = Math.min(
+								(i - 1 < 0) ? inf : minDist[i - 1][j] + 1,
+								(j - 1 < 0) ? inf : minDist[i][j - 1] + 1
+				);
+                
+			}
+		}
+	}
+        
+	// traverse whole array from bottom-right to top-left
+	for (int i = m - 1; i >= 0; i--) {
+		for (int j = n - 1; j >= 0; j--) {
+			if (mat[i][j] != 0) {
+				// find minimum from bottom and right adjacent cell
+				minDist[i][j] = Math.min(minDist[i][j],
+						Math.min(
+								(i + 1 >= m) ? minDist[i][j] : minDist[i + 1][j] + 1,
+								(j + 1 >= n) ? minDist[i][j] : minDist[i][j + 1] + 1
+						)
+				);
+			}
+		}
+	}
+      
+	return minDist;
+    }
+}

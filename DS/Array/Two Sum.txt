@@ -1,0 +1,56 @@
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+
+
+Solution:
+
+1. BRUTE FORCE APPROACH
+O(n^2) time complexity
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int n= nums.length;
+        int[] indexarr = new int [2];
+        
+        /* BRUTE FORCE APPPROACH */
+        for (int i=0; i<n; i++)
+        {
+            for (int j=i+1; j<n; j++)
+            {
+                if (nums[i]+ nums[j]== target)
+                {
+                    indexarr[0]= i;
+                    indexarr[1]= j;
+                }
+                
+            }
+        }
+		return idexarr;
+	}
+}
+2. HASHMAP APPROACH
+Linear time complexity.
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        
+        int sum = 0 ;
+        int arr[] = new int[2];
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int i=0;i<nums.length;i++){
+            
+           if(map.containsKey(target-nums[i])){
+               arr[0] = map.get(target-nums[i]);
+               arr[1] = i;
+               break;
+           }
+           map.put(nums[i],i);
+            
+        }
+        return arr;
+    }
+}
