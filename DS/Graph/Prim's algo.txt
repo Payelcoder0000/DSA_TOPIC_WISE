@@ -1,0 +1,89 @@
+package practice;
+
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
+class GFG {
+    static class AdjListNode{
+        int vertex, weight;
+ 
+        AdjListNode(int v, int w)
+        {
+            vertex = v;
+            weight = w;
+        }
+        
+        AdjListNode(){}
+        int getVertex() { return vertex; }
+        int getWeight() { return weight; }
+        
+    }
+ 
+    public static void primsAlgo(ArrayList<ArrayList<AdjListNode> > graph,int N)
+    {
+    	
+    	int key[] = new int[N];
+        int parent[] = new int[N]; 
+        boolean mstSet[] = new boolean[N]; 
+        for(int i = 0;i<N;i++) {
+        	key[i] = 100000000; 
+        	mstSet[i] = false; 
+        }
+ 
+        PriorityQueue<AdjListNode> pq = new PriorityQueue<>(
+                (v1, v2) -> v1.getWeight() - v2.getWeight());
+        
+        key[0] = 0;
+        parent[0] = -1; 
+        pq.add(new AdjListNode(key[0], 0)); 
+ 
+        while (pq.size() > 0) {
+        	int u = pq.poll().getVertex();
+        	mstSet[u] = true;
+ 
+            for (AdjListNode it : graph.get(u)) {
+            	if(mstSet[it.getVertex()] == false && it.getWeight() < key[it.getVertex()]) {
+        			parent[it.getVertex()] = u; 
+        			key[it.getVertex()] = it.getWeight(); 
+        			pq.add(new AdjListNode(it.getVertex(), key[it.getVertex()]));
+        		}
+            }
+        }
+       
+        for(int i = 1;i<N;i++) {
+        	System.out.println(parent[i] + " - " + i); 
+        }
+    }
+ 
+    public static void main(String[] args)
+    {
+        int V = 9;
+        ArrayList<ArrayList<AdjListNode> > adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+        adj.get(0).add(new AdjListNode(1, 4));
+		adj.get(0).add(new AdjListNode(7, 8));
+		
+		adj.get(1).add(new AdjListNode(2, 8));
+		adj.get(1).add(new AdjListNode(7, 11));
+		
+		adj.get(2).add(new AdjListNode(3, 7));
+		adj.get(2).add(new AdjListNode(8, 2));
+		
+		adj.get(2).add(new AdjListNode(5, 4));
+		adj.get(3).add(new AdjListNode(4, 9));
+		
+		adj.get(3).add(new AdjListNode(5, 14));
+		adj.get(4).add(new AdjListNode(5, 10));
+		
+		adj.get(5).add(new AdjListNode(6, 2));
+		adj.get(6).add(new AdjListNode(7, 1));
+		
+		adj.get(6).add(new AdjListNode(8, 6));
+		adj.get(7).add(new AdjListNode(8, 7));
+ 
+        GFG.primsAlgo(adj, 9);
+        
+    }
+}
