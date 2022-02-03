@@ -1,0 +1,64 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+
+ 
+
+Example 1:
+
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0. So it is possible.
+Example 2:
+
+Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+
+
+
+Solution:
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        
+        ArrayList[] graph = new ArrayList[numCourses];
+        for(int i=0;i<numCourses;i++)
+            graph[i] = new ArrayList();
+
+        int[] visited = new int[numCourses];
+        for(int i=0; i<prerequisites.length;i++){
+            graph[prerequisites[i][1]].add(prerequisites[i][0]);
+        }
+
+        for(int i=0; i<numCourses; i++)
+        {
+            if(visited[i]==0)
+                if(isCyclic(graph,visited,i))
+                    return false;
+        }
+        
+        return true;
+        
+    }
+    
+    boolean isCyclic(ArrayList[] adj,int[] visited,int curr)
+    {
+        if(visited[curr]==2)
+            return true;
+        
+        visited[curr] = 2;
+        for(int i=0;i<adj[curr].size();++i)
+            if(visited[(int) adj[curr].get(i)]!=1)
+                if(isCyclic(adj,visited,(int)adj[curr].get(i)))
+                    return true;
+        
+        visited[curr] = 1;
+        return false;
+    }
+}
+
+https://www.youtube.com/watch?v=kXy0ABd1vwo
