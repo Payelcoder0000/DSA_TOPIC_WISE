@@ -8,7 +8,7 @@ class Solution
         if(root == null) return ans;
         Map<Integer, Integer> map = new TreeMap<>();
         Queue<Pair> q = new LinkedList<Pair>();
-        q.add(new Pair(root, 0)); //Node Line
+        q.add(new Pair(root, 0)); //Node, Line
         while(!q.isEmpty()) {
             Pair it = q.remove();
             int hd = it.hd; 
