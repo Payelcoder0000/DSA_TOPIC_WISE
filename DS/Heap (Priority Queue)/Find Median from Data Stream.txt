@@ -1,0 +1,124 @@
+The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.
+
+For example, for arr = [2,3,4], the median is 3.
+For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+Implement the MedianFinder class:
+
+MedianFinder() initializes the MedianFinder object.
+void addNum(int num) adds the integer num from the data stream to the data structure.
+double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+ 
+
+Example 1:
+
+Input
+["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+[[], [1], [2], [], [3], []]
+Output
+[null, null, null, 1.5, null, 2.0]
+
+Explanation
+MedianFinder medianFinder = new MedianFinder();
+medianFinder.addNum(1);    // arr = [1]
+medianFinder.addNum(2);    // arr = [1, 2]
+medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
+medianFinder.addNum(3);    // arr[1, 2, 3]
+medianFinder.findMedian(); // return 2.0
+ 
+
+Solution:
+
+class MedianFinder {
+    
+     private Queue<Long> maxheap = new PriorityQueue<>(Comparator.reverseOrder()),
+                        minheap = new PriorityQueue();
+
+    public MedianFinder() {
+        
+    }
+    
+    public void addNum(int num) {
+        
+         int lsize = maxheap.size();
+        int rsize = minheap.size();
+        if(lsize==0)    //num is the 1st element in stream
+            maxheap.add((long)num);
+        else if(lsize==rsize)   //Push one element in maxheap for sure
+        {
+            if(num<minheap.peek())   //num can be pushed to maxheap (1st half) to maintain order
+                maxheap.add((long)num);
+            else    //Push root of minheap to maxheap (Push num to 2nd half)
+            {
+                long temp = minheap.peek();   //Save root of minheap
+                minheap.poll();  //Pop the root from minheap
+                minheap.add((long)num);  //Push num in minheap
+                maxheap.add(temp); //Push the previous saved root of minheap in the maxheap
+            }
+        }
+        else    ///We assume that maxheap can be larger than minheap by a max of 1 element only
+        {
+            if(minheap.size()==0)
+            {
+                if(num>maxheap.peek()) //Push num to 2nd half
+                    minheap.add((long)num);
+                else //Push num to 1st half
+                {
+                    long temp = maxheap.peek();
+                    maxheap.poll();
+                    maxheap.add((long)num);
+                    minheap.add(temp);
+                }
+            }
+            else if(num>=minheap.peek()) //Push the element directly in minheap (2nd half)
+                minheap.add((long)num);
+            else    //Push root of maxheap to minheap
+            {
+                if(num<maxheap.peek())   //Push num to 1st half
+                {
+                    long temp = maxheap.peek();   //Save root of maxheap
+                    maxheap.poll();  //Pop root of maxheap
+                    maxheap.add((long)num);  //Push num to maxheap
+                    minheap.add(temp); //Push previous saved root of maxheap to minheap
+                }
+                else    //Push num to 2nd half
+                    minheap.add((long)num);
+            }
+        }
+        
+    }
+    
+    public double findMedian() {
+        
+         int lsize = maxheap.size();
+        int rsize = minheap.size();
+        if(lsize > rsize)  //Return top of maxheap for odd no of elements
+            return maxheap.peek();
+        else    //Else return avg of top of maxheap and minheap
+            return (maxheap.peek()+minheap.peek())/2.0;
+        
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+
+T.C = O(NlogN) // Heap push /pop -> O(logN)
+space = O(1)
+
+
+//easy:
+
+public void addNum(int num) {
+        
+        maxheap.offer((long)num);
+        minheap.offer(maxheap.poll());
+        if (maxheap.size() < minheap.size()){
+            maxheap.offer(minheap.poll());
+        }
+        
+    }
