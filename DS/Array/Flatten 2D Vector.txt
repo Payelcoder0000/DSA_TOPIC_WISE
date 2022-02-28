@@ -1,0 +1,92 @@
+Implement an iterator to flatten a 2d vector.
+
+Example:
+
+Input: 2d vector =
+[
+  [1,2],
+  [3],
+  [4,5,6]
+]
+Output: [1,2,3,4,5,6]
+Explanation: By calling next repeatedly until hasNext returns false, 
+             the order of elements returned by next should be: [1,2,3,4,5,6].
+Follow up:
+As an added challenge, try to code it using only iterators in C++ or iterators in Java.
+
+answer:
+
+Use two indexes to record the index of the list and the element index of the current list respectively.
+
+Time Complexity: Vector2D() O(1). hasNext() O(vec2d.size()). next() O(1). Space: O(1).
+
+
+public class Vector2D {
+    List<List<Integer>> listOfList;
+    int listIndex;
+    int elemIndex;
+    public Vector2D(List<List<Integer>> vec2d) {
+        listOfList = vec2d;
+        listIndex = 0;
+        elemIndex = 0;
+    }
+
+    public int next() {
+        return listOfList.get(listIndex).get(elemIndex++);
+    }
+
+    public boolean hasNext() {
+        while(listIndex < listOfList.size()){
+            if(elemIndex < listOfList.get(listIndex).size()){
+                return true;
+            }else{
+                listIndex++;
+                elemIndex = 0;
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+
+
+
+
+Follow up to use Iterator class.
+
+Time Complexity:  Vector2D() O(1). hasNext() O(vec2d.size()). next() O(1). Space: O(1).
+
+
+public class Vector2D implements Iterator<Integer> {
+    Iterator<List<Integer>> i;
+    Iterator<Integer> j;
+    
+    public Vector2D(List<List<Integer>> vec2d) {
+        i = vec2d.iterator();        
+    }
+
+    @Override
+    public Integer next() {
+        return j.next();
+    }
+
+    @Override
+    public boolean hasNext() {
+        while((j==null || !j.hasNext()) && i.hasNext()){
+            j = i.next().iterator();
+        }
+        
+        return j!=null && j.hasNext();
+    }
+}
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
