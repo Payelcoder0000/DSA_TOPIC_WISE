@@ -45,7 +45,7 @@ class Solution {
 Complexity Analysis
 ------------------------
 
-Time complexity : O(n)O(n). Single pass.
+Time complexity : O(n). Single pass.
 
-Space complexity: O(1)O(1). Constant space needed.
+Space complexity: O(1). Constant space needed.
 
