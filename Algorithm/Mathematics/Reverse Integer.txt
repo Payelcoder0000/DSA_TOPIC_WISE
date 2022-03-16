@@ -33,7 +33,7 @@ class Solution {
             y=((y*10)+(x%10));
             x/=10;
             
-            if(y/10!=prev){
+            if(y/10!=prev){ //If overflow exists, the new result will not equal previous one.
                 return 0;
             }
             prev=y;

@@ -26,7 +26,7 @@ class Solution {
         
         for(int i=2; i*i <= n;  i++){
             if(!composite[i]){
-                for(int j=2*i; j<=n; j+=i) composite[j] = true;
+                for(int j=i*i; j<=n; j+=i) composite[j] = true;
             }
         }
         
