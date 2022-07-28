@@ -26,35 +26,42 @@ Output: "0.(012)"
 Solution:
 
 
-class Solution {
+public class Solution {
     public String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) {
+            return "0";
+        }
+        StringBuilder res = new StringBuilder();
+        // "+" or "-"
+        res.append(((numerator > 0) ^ (denominator > 0)) ? "-" : "");
+        long num = Math.abs((long)numerator);
+        long den = Math.abs((long)denominator);
         
-        if (denominator == 0) return "";
-	    StringBuilder str = new StringBuilder();
-	    HashMap<Long, Integer> map = new HashMap<Long, Integer>();
-	    if (numerator < 0 && denominator > 0 || numerator > 0 && denominator < 0) {
-	        str.append('-');
-	    }
-	    long num = Math.abs((long)numerator);
-	    long den = Math.abs((long)denominator);
-	    long n = num/den;
-	    long reminder = num % den;
-	    str.append(n);
-	    if (reminder == 0) return str.toString();
-	    else str.append('.');
-	    while(!map.containsKey(reminder)) {
-	        map.put(reminder,str.length());
-	        n = reminder*10/den;
-	        reminder = reminder*10%den;
-	        if (reminder != 0 || reminder == 0 && !map.containsKey(reminder)) {
-	            str.append(n);
-	        }
-	    }
-	    if (reminder != 0) {
-	        str.insert(map.get(reminder),"(");
-	        str.append(')');            
-	    }
-	    return str.toString();
+        // integral part
+        res.append(num / den);
+        num %= den;
+        if (num == 0) {
+            return res.toString();
+        }
         
+        // fractional part
+        res.append(".");
+        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+        map.put(num, res.length());
+        while (num != 0) {
+            num *= 10;
+            res.append(num / den);
+            num %= den;
+            if (map.containsKey(num)) {
+                int index = map.get(num);
+                res.insert(index, "(");
+                res.append(")");
+                break;
+            }
+            else {
+                map.put(num, res.length());
+            }
+        }
+        return res.toString();
     }
 }
